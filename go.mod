@@ -22,7 +22,9 @@ require (
 	github.com/fsouza/go-dockerclient v1.7.1
 	github.com/ghodss/yaml v1.0.0
 	github.com/golangplus/testing v1.0.0 // indirect
+	github.com/gonum/diff v0.0.0-20181124234638-500114f11e71 // indirect
 	github.com/gonum/graph v0.0.0-20170401004347-50b27dea7ebb
+	github.com/gonum/integrate v0.0.0-20181209220457-a422b5c0fdf2 // indirect
 	github.com/gonum/mathext v0.0.0-20181121095525-8a4bf007ea55 // indirect
 	github.com/gonum/stat v0.0.0-20181125101827-41a0da705a5b // indirect
 	github.com/google/go-cmp v0.5.4
@@ -33,10 +35,10 @@ require (
 	github.com/onsi/gomega v1.9.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.0.2-0.20190823105129-775207bd45b6
-	github.com/openshift/api v0.0.0-20210521075222-e273a339932a
+	github.com/openshift/api v0.0.0-20210517065120-b325f58df679
 	github.com/openshift/build-machinery-go v0.0.0-20210423112049-9415d7ebd33e
-	github.com/openshift/client-go v0.0.0-20210521082421-73d9475a9142
-	github.com/openshift/library-go v0.0.0-20210521084623-7392ea9b02ca
+	github.com/openshift/client-go v0.0.0-20210503124028-ac0910aac9fa
+	github.com/openshift/library-go v0.0.0-20210518141355-1ca51a11f2f8
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.9.0
 	github.com/prometheus/common v0.17.0 // indirect
@@ -69,6 +71,7 @@ require (
 replace (
 	github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 	github.com/apcera/gssapi => github.com/openshift/gssapi v0.0.0-20161010215902-5fb4217df13b
+	github.com/openshift/library-go => github.com/soltysh/library-go v0.0.0-20210519104158-d0f020e30a72
 
 	k8s.io/apimachinery => github.com/openshift/kubernetes-apimachinery v0.0.0-20210521074607-b6b98f7a1855
 	k8s.io/cli-runtime => github.com/openshift/kubernetes-cli-runtime v0.0.0-20210521074950-112a61d2624f

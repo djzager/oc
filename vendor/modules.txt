@@ -285,6 +285,8 @@ github.com/gonum/blas
 github.com/gonum/blas/blas64
 github.com/gonum/blas/native
 github.com/gonum/blas/native/internal/math32
+# github.com/gonum/diff v0.0.0-20181124234638-500114f11e71
+## explicit
 # github.com/gonum/floats v0.0.0-20181209220543-c233463c7e82
 github.com/gonum/floats
 # github.com/gonum/graph v0.0.0-20170401004347-50b27dea7ebb
@@ -305,6 +307,8 @@ github.com/gonum/graph/path
 github.com/gonum/graph/simple
 github.com/gonum/graph/topo
 github.com/gonum/graph/traverse
+# github.com/gonum/integrate v0.0.0-20181209220457-a422b5c0fdf2
+## explicit
 # github.com/gonum/internal v0.0.0-20181124074243-f884aa714029
 github.com/gonum/internal/asm/f32
 github.com/gonum/internal/asm/f64
@@ -423,7 +427,7 @@ github.com/opencontainers/image-spec/specs-go/v1
 github.com/opencontainers/runc/libcontainer/user
 # github.com/opencontainers/runtime-spec v1.0.3-0.20200520003142-237cc4f519e2
 github.com/opencontainers/runtime-spec/specs-go
-# github.com/openshift/api v0.0.0-20210521075222-e273a339932a
+# github.com/openshift/api v0.0.0-20210517065120-b325f58df679
 ## explicit
 github.com/openshift/api
 github.com/openshift/api/annotations
@@ -493,7 +497,7 @@ github.com/openshift/build-machinery-go/make/targets/golang
 github.com/openshift/build-machinery-go/make/targets/openshift
 github.com/openshift/build-machinery-go/make/targets/openshift/operator
 github.com/openshift/build-machinery-go/scripts
-# github.com/openshift/client-go v0.0.0-20210521082421-73d9475a9142
+# github.com/openshift/client-go v0.0.0-20210503124028-ac0910aac9fa
 ## explicit
 github.com/openshift/client-go/apps/clientset/versioned
 github.com/openshift/client-go/apps/clientset/versioned/fake
@@ -556,7 +560,7 @@ github.com/openshift/client-go/user/clientset/versioned/fake
 github.com/openshift/client-go/user/clientset/versioned/scheme
 github.com/openshift/client-go/user/clientset/versioned/typed/user/v1
 github.com/openshift/client-go/user/clientset/versioned/typed/user/v1/fake
-# github.com/openshift/library-go v0.0.0-20210521084623-7392ea9b02ca
+# github.com/openshift/library-go v0.0.0-20210518141355-1ca51a11f2f8 => github.com/soltysh/library-go v0.0.0-20210519104158-d0f020e30a72
 ## explicit
 github.com/openshift/library-go/pkg/apps/appsserialization
 github.com/openshift/library-go/pkg/apps/appsutil
@@ -1388,6 +1392,7 @@ sigs.k8s.io/structured-merge-diff/v4/value
 sigs.k8s.io/yaml
 # github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 # github.com/apcera/gssapi => github.com/openshift/gssapi v0.0.0-20161010215902-5fb4217df13b
+# github.com/openshift/library-go => github.com/soltysh/library-go v0.0.0-20210519104158-d0f020e30a72
 # k8s.io/apimachinery => github.com/openshift/kubernetes-apimachinery v0.0.0-20210521074607-b6b98f7a1855
 # k8s.io/cli-runtime => github.com/openshift/kubernetes-cli-runtime v0.0.0-20210521074950-112a61d2624f
 # k8s.io/client-go => github.com/openshift/kubernetes-client-go v0.0.0-20210521075216-71b63307b5df
