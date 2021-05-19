@@ -25,10 +25,12 @@ import (
 	kcmdutil "k8s.io/kubectl/pkg/cmd/util"
 	"k8s.io/kubectl/pkg/util/templates"
 
+	operatorv1alpha1client "github.com/openshift/client-go/operator/clientset/versioned/typed/operator/v1alpha1"
 	"github.com/openshift/library-go/pkg/image/dockerv1client"
 	"github.com/openshift/library-go/pkg/image/registryclient"
 	"github.com/openshift/oc/pkg/cli/image/imagesource"
 	imagemanifest "github.com/openshift/oc/pkg/cli/image/manifest"
+	"github.com/openshift/oc/pkg/cli/image/strategy"
 	"github.com/openshift/oc/pkg/cli/image/workqueue"
 )
 
@@ -38,7 +40,7 @@ func NewInfoOptions(streams genericclioptions.IOStreams) *InfoOptions {
 	}
 }
 
-func NewInfo(streams genericclioptions.IOStreams) *cobra.Command {
+func NewInfo(f kcmdutil.Factory, streams genericclioptions.IOStreams) *cobra.Command {
 	o := NewInfoOptions(streams)
 	cmd := &cobra.Command{
 		Use:   "info IMAGE [...]",
@@ -68,8 +70,8 @@ func NewInfo(streams genericclioptions.IOStreams) *cobra.Command {
 
 		`),
 		Run: func(cmd *cobra.Command, args []string) {
-			kcmdutil.CheckErr(o.Complete(cmd, args))
-			kcmdutil.CheckErr(o.Validate())
+			kcmdutil.CheckErr(o.Complete(f, cmd, args))
+			kcmdutil.CheckErr(o.Validate(cmd))
 			kcmdutil.CheckErr(o.Run())
 		},
 	}
@@ -78,6 +80,9 @@ func NewInfo(streams genericclioptions.IOStreams) *cobra.Command {
 	o.SecurityOptions.Bind(flags)
 	flags.StringVarP(&o.Output, "output", "o", o.Output, "Print the image in an alternative format: json")
 	flags.StringVar(&o.FileDir, "dir", o.FileDir, "The directory on disk that file:// images will be read from.")
+	flags.BoolVar(&o.ClusterICSP, "cluster-icsp", o.ClusterICSP, "When set to true, look for alternative image sources from ImageContentSourcePolicy objects in cluster, honor the ordering of those sources, and fail if an ImageContentSourcePolicy is not found in cluster.")
+	flags.StringVar(&o.ICSPFile, "icsp-file", o.ICSPFile, "Path to an ImageContentSourcePolicy file.  If set, data from this file will be used to set alternative image sources.")
+
 	return cmd
 }
 
@@ -87,22 +92,37 @@ type InfoOptions struct {
 	SecurityOptions imagemanifest.SecurityOptions
 	FilterOptions   imagemanifest.FilterOptions
 
-	Images []string
+	operatorClient operatorv1alpha1client.OperatorV1alpha1Interface
 
-	FileDir string
-
-	Output string
+	Images      []string
+	FileDir     string
+	Output      string
+	ClusterICSP bool
+	ICSPFile    string
 }
 
-func (o *InfoOptions) Complete(cmd *cobra.Command, args []string) error {
+func (o *InfoOptions) Complete(f kcmdutil.Factory, cmd *cobra.Command, args []string) error {
 	if len(args) < 1 {
 		return fmt.Errorf("info expects at least one argument, an image pull spec")
 	}
 	o.Images = args
+
+	clientConfig, err := f.ToRESTConfig()
+	if err != nil {
+		return err
+	}
+	o.operatorClient, err = operatorv1alpha1client.NewForConfig(clientConfig)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
-func (o *InfoOptions) Validate() error {
+func (o *InfoOptions) Validate(cmd *cobra.Command) error {
+	if cmd.Flags().Lookup("cluster-icsp").Changed && len(o.ICSPFile) > 0 {
+		return fmt.Errorf("cannot use --cluster-icsp together with --icsp-file")
+	}
 	return o.FilterOptions.Validate()
 }
 
@@ -115,6 +135,10 @@ func (o *InfoOptions) Run() error {
 	registryContext, err := o.SecurityOptions.Context()
 	if err != nil {
 		return err
+	}
+	if len(o.ICSPFile) > 0 || o.ClusterICSP {
+		registryContext = registryContext.WithAlternateBlobSourceStrategy(
+			strategy.NewSimpleLookupICSPStrategy(o.ICSPFile, o.operatorClient.ImageContentSourcePolicies()))
 	}
 	opts := &imagesource.Options{
 		FileDir:         o.FileDir,
